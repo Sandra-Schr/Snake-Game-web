@@ -60,14 +60,16 @@ class GameController():
      ### Initialize pygame modules ####
     pygame.init()
 
-   # Font
-    self.myFont_S = pygame.font.Font("/home/sandra/SnakeGame/ARCADECLASSIC.TTF", size=40)
-    self.myFont_L = pygame.font.Font("/home/sandra/SnakeGame/ARCADECLASSIC.TTF", size=70)
+    # Font
+    self.myFont_S = pygame.font.SysFont("Comic Sans", size=40)
+    self.myFont_L = pygame.font.SysFont("Comic Sans", size=70)
+    #self.myFont_S = pygame.font.Font("/home/sandra/SnakeGame/ARCADECLASSIC.TTF", size=40) --> ToDo 
+    #self.myFont_L = pygame.font.Font("/home/sandra/SnakeGame/ARCADECLASSIC.TTF", size=70) --> ToDo 
     
     # Initialise game window
     self.game_window = pygame.display.set_mode((self.window_x, self.window_y))
 
-    # FPS (frames per second) controller --> aktuell nur eine Zeit
+    # FPS (frames per second) controller
     self.fps = pygame.time.Clock()
 
     # setting default snake direction towards
@@ -84,7 +86,7 @@ class GameController():
     self.head = block(100,50)
     self.mySnake = snake(copy.copy(self.head),snakeLength) # ToDo: Check if copy for snakes' head is necessary!
 
-    # Snake 2 --> Mutlti-Player
+    # Snake 2 --> multi player
     #self.mySnake2 = snake(400,300,3)
     
     # Generate random position for the apple
@@ -124,7 +126,7 @@ class GameController():
     
     self.mySnake.movement(self.change_to)
     
-    snake_ate = self.mySnake.growingSnake(self.myAppleBlock) # needs snake_ate= ... for return value -> return value will be saved in snake_ate
+    snake_ate = self.mySnake.growingSnake(self.myAppleBlock) 
     if snake_ate == True:
       self.myAppleBlock = self.generateRandomPosOnBoard()
       self.score += 10
@@ -201,7 +203,7 @@ class GameController():
     for curBlock in self.mySnake.body:
       pygame.draw.rect(self.game_window, self.green, pygame.Rect(curBlock.x, curBlock.y, 10, 10))
  
-    # draw the snake 2 --> Multi-Player test
+    # draw the snake 2 --> multi-player test
     #for pos in self.mySnake2.body:
     #  pygame.draw.rect(self.game_window, self.green, pygame.Rect(pos[0], pos[1], 10, 10))
 
@@ -213,7 +215,6 @@ class GameController():
       pygame.draw.rect(self.game_window, self.red, pygame.Rect(curMine.x, curMine.y, 10, 10))
 
     # displaying score continuously
-    #self.show_score(1, self.white, 'comic sans', 20)
     self.show_score()
 
     # Refresh game screen
@@ -223,13 +224,14 @@ class GameController():
     self.fps.tick(self.mySnake.speed)
 
 
-### Game Loop ###
+### GAME LOOP ###
   async def run(self):
     while True:
       self.processInput()
       self.update()
       self.render()
       await asyncio.sleep(0)  # let other tasks run
+
   
   def generateRandomPosOnBoard(self) -> block: #return type: block
    randomNumbers = random.randrange(1, (self.window_x//10)) * 10, random.randrange(1, (self.window_y//10)) * 10
@@ -257,7 +259,7 @@ class GameController():
       
     # create the display surface object 
     # score_surface
-    score_surface = self.myFont_S.render('Score ' + str(self.score), True, self.white) # Wieso hier weißer Hintergrund, wenn score als Variable übergeben?!
+    score_surface = self.myFont_S.render('Score ' + str(self.score), True, self.white) 
     
     # create a rectangular object for the text
     # surface object
@@ -266,8 +268,6 @@ class GameController():
     # displaying text
     self.game_window.blit(score_surface, score_rect)
     
-
-
 
 
 
@@ -335,18 +335,12 @@ class snake(object):
 
       eatApple = True
 
-    return eatApple #return value for update fuction in GC
+    return eatApple 
 
 
 
+if __name__ == '__main__':
+  myGameController = GameController()
+  asyncio.run(myGameController.run())
 
-myGameController = GameController()
-asyncio.run(myGameController.run())
 
-'''
-  print(myGameController.number)
-  myGameController2 = GameController()
-  print(myGameController.number)
-  print(myGameController2.number)
-  print(GameController.number)
-'''
