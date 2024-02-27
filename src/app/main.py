@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pygame
 import random
 import copy
@@ -61,6 +62,7 @@ class GameController():
     pygame.init()
 
     # Font
+    self.myFont_xS = pygame.font.SysFont("Comic Sans", size=25)
     self.myFont_S = pygame.font.SysFont("Comic Sans", size=40)
     self.myFont_L = pygame.font.SysFont("Comic Sans", size=70)
     #self.myFont_S = pygame.font.Font("/home/sandra/SnakeGame/ARCADECLASSIC.TTF", size=40) --> ToDo 
@@ -79,8 +81,6 @@ class GameController():
 
     # Set display caption
     pygame.display.set_caption('Snake Game')
-
-      
 
     snakeLength = 6
     self.head = block(100,50)
@@ -217,6 +217,10 @@ class GameController():
     # displaying score continuously
     self.show_score()
 
+    # initials
+    initials = self.myFont_xS.render('© 2024 Sandra Schreiber', True, self.blue)
+    self.game_window.blit(initials, (self.window_x/1.3, self.window_y/1.05))
+    
     # Refresh game screen
     pygame.display.update()
 
